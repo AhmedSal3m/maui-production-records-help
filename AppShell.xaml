@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Shell
+    x:Class="PlasticQC.AppShell"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:views="clr-namespace:PlasticQC.Views"
+    Title="PlasticQC"
+    Shell.FlyoutBehavior="Disabled">
+
+    <ShellContent
+        Title="Login"
+        ContentTemplate="{DataTemplate views:LoginPage}"
+        Route="Login" />
+
+    <TabBar Route="AdminPanel">
+        <Tab Title="Admin" Icon="admin_icon.png">
+            <ShellContent
+                Title="Admin Panel"
+                ContentTemplate="{DataTemplate views:AdminPanelPage}" />
+        </Tab>
+    </TabBar>
+
+    <TabBar Route="DailyEntry">
+        <Tab Title="Entry" Icon="entry_icon.png">
+            <ShellContent
+                Title="Daily Entry"
+                ContentTemplate="{DataTemplate views:DailyEntryPage}" />
+        </Tab>
+        <Tab Title="Records" Icon="records_icon.png">
+            <ShellContent
+                Title="Records"
+                ContentTemplate="{DataTemplate views:RecordsPage}" />
+        </Tab>
+        <Tab Title="Comparison" Icon="chart_icon.png">
+            <ShellContent
+                Title="Quality Comparison"
+                ContentTemplate="{DataTemplate views:ComparisonPage}" />
+        </Tab>
+    </TabBar>
+
+    <ShellContent
+        Title="User Management"
+        ContentTemplate="{DataTemplate views:UserManagementPage}"
+        Route="UserManagement" />
+
+    <ShellContent
+        Title="Product Management"
+        ContentTemplate="{DataTemplate views:ProductManagementPage}"
+        Route="ProductManagement" />
+
+    <ShellContent
+        Title="Records"
+        ContentTemplate="{DataTemplate views:RecordsPage}"
+        Route="Records" />
+
+</Shell>

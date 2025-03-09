@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewmodels="clr-namespace:PlasticQC.ViewModels"
+             xmlns:local="clr-namespace:PlasticQC.Models"
+             x:Class="PlasticQC.Views.UserManagementPage"
+             x:DataType="viewmodels:UserManagementViewModel"
+             Title="{Binding Title}">
+
+    <Grid RowDefinitions="Auto,*,Auto" Padding="20">
+        <Grid Grid.Row="0" ColumnDefinitions="*,Auto" Margin="0,0,0,10">
+            <Label Text="User Management" 
+                   Grid.Column="0"
+                   FontSize="24" 
+                   FontAttributes="Bold"
+                   VerticalOptions="Center" />
+
+            <Button Text="Add New User" 
+                    Grid.Column="1"
+                    Command="{Binding AddNewCommand}"
+                    IsEnabled="{Binding IsEditing, Converter={StaticResource InvertedBoolConverter}}"
+                    BackgroundColor="{AppThemeBinding Light=#32CD32, Dark=#2E8B57}"
+                    TextColor="White"
+                    CornerRadius="8" />
+        </Grid>
+
+        <RefreshView Grid.Row="1" 
+                     IsRefreshing="{Binding IsRefreshing}"
+                     Command="{Binding RefreshCommand}">
+            <ScrollView>
+                <StackLayout Spacing="10">
+                    <!-- User list -->
+                    <CollectionView ItemsSource="{Binding Users}"
+                                    SelectionMode="None"
+                                    EmptyView="No users found">
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate x:DataType="local:User">
+                                <Frame Margin="0,5" Padding="15" BorderColor="LightGray" CornerRadius="8">
+                                    <Grid ColumnDefinitions="*,Auto,Auto">
+                                        <StackLayout Grid.Column="0" Spacing="5" VerticalOptions="Center">
+                                            <Label Text="{Binding FullName}" FontAttributes="Bold" FontSize="16" />
+                                            <Label Text="{Binding Username}" FontSize="14" />
+                                            <Label Text="{Binding IsAdmin, StringFormat='Admin: {0}'}" FontSize="14" />
+                                        </StackLayout>
+
+                                        <Button Text="Edit"
+                                                Grid.Column="1"
+                                                Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:UserManagementViewModel}}, Path=EditCommand}"
+                                                CommandParameter="{Binding .}"
+                                                BackgroundColor="{AppThemeBinding Light=#1E90FF, Dark=#0078D7}"
+                                                TextColor="White"
+                                                CornerRadius="8"
+                                                Margin="5"
+                                                VerticalOptions="Center" />
+
+                                        <Button Text="Delete"
+                                                Grid.Column="2"
+                                                Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:UserManagementViewModel}}, Path=DeleteCommand}"
+                                                CommandParameter="{Binding .}"
+                                                BackgroundColor="{AppThemeBinding Light=#DC143C, Dark=#8B0000}"
+                                                TextColor="White"
+                                                CornerRadius="8"
+                                                Margin="5"
+                                                VerticalOptions="Center" />
+                                    </Grid>
+                                </Frame>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+
+                    <!-- Activity indicator -->
+                    <ActivityIndicator IsRunning="{Binding IsBusy}" 
+                                       IsVisible="{Binding IsBusy}" 
+                                       HorizontalOptions="Center" />
+
+                    <!-- Error message -->
+                    <Label Text="{Binding ErrorMessage}" 
+                           TextColor="Red" 
+                           IsVisible="{Binding ErrorMessage, Converter={StaticResource StringToBoolConverter}}"
+                           HorizontalOptions="Center" />
+                </StackLayout>
+            </ScrollView>
+        </RefreshView>
+
+        <!-- Edit/Add User Form -->
+        <Frame Grid.Row="1" 
+               IsVisible="{Binding IsEditing}"
+               BackgroundColor="{AppThemeBinding Light=White, Dark=#2D2D30}"
+               BorderColor="{AppThemeBinding Light=LightGray, Dark=Gray}"
+               Margin="20"
+               Padding="20"
+               CornerRadius="10"
+               HasShadow="True">
+            <Grid RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto" RowSpacing="15">
+                <Label Text="{Binding IsNewUser, Converter={StaticResource BoolToStringConverter}, ConverterParameter='Add New User|Edit User'}"
+                       Grid.Row="0"
+                       FontSize="20"
+                       FontAttributes="Bold"
+                       HorizontalOptions="Center" />
+
+                <StackLayout Grid.Row="1" Orientation="Vertical">
+                    <Label Text="Username" />
+                    <Entry Text="{Binding Username}" Placeholder="Enter username" />
+                </StackLayout>
+
+                <StackLayout Grid.Row="2" Orientation="Vertical">
+                    <Label Text="{Binding IsNewUser, Converter={StaticResource BoolToStringConverter}, ConverterParameter='Password|New Password (leave empty to keep current)'}" />
+                    <Entry Text="{Binding Password}" IsPassword="True" Placeholder="Enter password" />
+                </StackLayout>
+
+                <StackLayout Grid.Row="3" Orientation="Vertical">
+                    <Label Text="Full Name" />
+                    <Entry Text="{Binding FullName}" Placeholder="Enter full name" />
+                </StackLayout>
+
+                <StackLayout Grid.Row="4" Orientation="Horizontal">
+                    <CheckBox IsChecked="{Binding IsAdmin}" />
+                    <Label Text="Administrator" VerticalOptions="Center" />
+                </StackLayout>
+
+                <Label Text="{Binding ErrorMessage}" 
+                       Grid.Row="5"
+                       TextColor="Red" 
+                       IsVisible="{Binding ErrorMessage, Converter={StaticResource StringToBoolConverter}}"
+                       HorizontalOptions="Center" />
+
+                <StackLayout Grid.Row="6" Orientation="Horizontal" HorizontalOptions="Center" Spacing="20">
+                    <Button Text="Save"
+                            Command="{Binding SaveCommand}"
+                            BackgroundColor="{AppThemeBinding Light=#32CD32, Dark=#2E8B57}"
+                            TextColor="White"
+                            CornerRadius="8"
+                            WidthRequest="120" />
+
+                    <Button Text="Cancel"
+                            Command="{Binding CancelCommand}"
+                            BackgroundColor="{AppThemeBinding Light=#808080, Dark=#696969}"
+                            TextColor="White"
+                            CornerRadius="8"
+                            WidthRequest="120" />
+                </StackLayout>
+            </Grid>
+        </Frame>
+    </Grid>
+</ContentPage>

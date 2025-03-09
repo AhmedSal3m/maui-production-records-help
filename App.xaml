@@ -1,0 +1,24 @@
+﻿<?xml version = "1.0" encoding = "UTF-8" ?>
+<Application xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:PlasticQC"
+             xmlns:helpers="clr-namespace:PlasticQC.Helpers"
+             x:Class="PlasticQC.App">
+    <Application.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Resources/Styles/Colors.xaml" />
+                <ResourceDictionary Source="Resources/Styles/Styles.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+
+            <!-- Application Converters -->
+            <helpers:StringToBoolConverter x:Key="StringToBoolConverter" />
+            <helpers:InvertedBoolConverter x:Key="InvertedBoolConverter" />
+            <helpers:BoolToStringConverter x:Key="BoolToStringConverter" />
+            <helpers:BoolToColorConverter x:Key="BoolToColorConverter" />
+            <helpers:ItemNumberToColorConverter x:Key="ItemNumberToColorConverter" />
+            <helpers:ToleranceConverter x:Key="ToleranceConverter" />
+            <helpers:ValueToColorConverter x:Key="ValueToColorConverter" />
+        </ResourceDictionary>
+    </Application.Resources>
+</Application>
